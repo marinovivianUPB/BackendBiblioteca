@@ -12,4 +12,6 @@ public interface LibroService {
     List<Libro> getAll();
 
     Libro deleteById(String id);
+
+    Libro updateLibro(String id);
 }

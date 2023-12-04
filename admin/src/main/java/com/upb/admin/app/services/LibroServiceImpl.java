@@ -1,14 +1,17 @@
 package com.upb.admin.app.services;
 
+import com.upb.admin.domain.models.User;
 import com.upb.admin.infrastructure.entity.LibroEntity;
 import com.upb.admin.domain.models.Libro;
 import com.upb.admin.domain.interfaces.LibroRepository;
+import com.upb.admin.infrastructure.entity.UserEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class LibroServiceImpl implements LibroService {
@@ -28,16 +31,32 @@ public class LibroServiceImpl implements LibroService {
 
     @Override
     public Libro getById(String id) {
-        return null;
+        LibroEntity libroEntity = this.libroRepository.getById(id);
+        Libro libro = new Libro();
+        BeanUtils.copyProperties(libroEntity, libro);
+        return libro;
     }
 
     @Override
     public List<Libro> getAll() {
-        return null;
+        List<LibroEntity> libroEntities = this.libroRepository.findAll();
+        List<Libro> libroList = libroEntities.stream().map(libroEntity -> {
+            Libro libro = new Libro();
+            BeanUtils.copyProperties(libroEntity, libro);
+            return libro;
+        }).collect(Collectors.toList());
+        return libroList;
     }
 
     @Override
     public Libro deleteById(String id) {
+        Libro libro = this.getById(id);
+        this.libroRepository.deleteById(id);
+        return libro;
+    }
+
+    @Override
+    public Libro updateLibro(String id) {
         return null;
     }
 

@@ -47,6 +47,10 @@ public class User {
         return admin;
     }
 
+    public boolean getAdmin() {
+        return admin;
+    }
+
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }

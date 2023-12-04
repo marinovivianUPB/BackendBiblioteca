@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceV2Impl implements UserService {
@@ -28,42 +30,43 @@ public class UserServiceV2Impl implements UserService {
 
     @Override
     public User getById(String id) {
-        return null;
+        UserEntity userEntity = this.userRepository.getById(id);
+        User user = new User();
+        BeanUtils.copyProperties(userEntity, user);
+        return user;
     }
 
     @Override
     public List<User> getAll() {
-        return null;
-    }
-
-    @Override
-    public User deleteById(String id) {
-        return null;
-    }
-
-    /*@Override
-    public User getById(String id) {
-        return userList
-                .stream()
-                .filter(employee -> employee.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID "+id));
-    }
-
-    @Override
-    public List<User> getAll() {
+        List<UserEntity> userEntities = this.userRepository.findAll();
+        List<User> userList = userEntities.stream().map(userEntity -> {
+            User user = new User();
+            BeanUtils.copyProperties(userEntity, user);
+            return user;
+        }).collect(Collectors.toList());
         return userList;
     }
 
     @Override
     public User deleteById(String id) {
-        User toBeDeleted = userList.stream()
-                .filter(employee -> employee.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID "+id));
-        userList.remove(toBeDeleted);
-        return toBeDeleted;
-    }*/
+        User user = this.getById(id);
+        this.userRepository.deleteById(id);
+        //obtener identidad
+        //merge con nuevo modelo
+        //modelo -> entidad
+        return user;
+    }
 
+    @Override
+    public User updateUser(String id, User user) {
+        UserEntity originalEntity = this.userRepository.getById(id);
+
+        BeanUtils.copyProperties(user, originalEntity, "id");
+        UserEntity updatedEntity = this.userRepository.save(originalEntity);
+        System.out.println(updatedEntity.isAdmin());
+        User userUpdated = new User();
+        BeanUtils.copyProperties(updatedEntity, userUpdated);
+        return userUpdated;
+    }
 
 }

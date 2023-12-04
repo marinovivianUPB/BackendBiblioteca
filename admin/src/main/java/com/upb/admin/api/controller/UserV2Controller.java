@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -17,8 +18,8 @@ public class UserV2Controller {
     private UserService userService;
 
     @PostMapping
-    public User save(@RequestBody User employee) {
-        return userService.save(employee);
+    public User save(@RequestBody User user) {
+        return userService.save(user);
     }
 
     @GetMapping
@@ -34,5 +35,12 @@ public class UserV2Controller {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable String id) {
         return userService.getById(id);
+    }
+
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable String id, @RequestBody User user) {
+
+        System.out.println(user.getAdmin());
+        return userService.updateUser(id, user);
     }
 }
