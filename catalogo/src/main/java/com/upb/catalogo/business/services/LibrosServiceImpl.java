@@ -1,5 +1,8 @@
 package com.upb.catalogo.business.services;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,16 +41,23 @@ public class LibrosServiceImpl implements LibrosService{
         BeanUtils.copyProperties(librosEntity, libros);
         return libros;
     }
-/*
+
+
    @Override
-    public Libros getLibrosByAutor(String autor) {
-        LibrosEntity librosEntity =
+    public List<Libros> getLibrosByAutor(String autor) {
+        List<LibrosEntity> librosEntityList =
                 this.librosRepository
-                        .findById(id)
-                        .get();
-        Libros libros = new Libros();
-        BeanUtils.copyProperties(librosEntity, libros);
-        return libros;
-    } */
+                        .findByAutor(autor);
+        List<Libros> librosList = new ArrayList<>();
+
+        for (LibrosEntity librosEntity : librosEntityList) {
+            Libros libros = new Libros();
+            BeanUtils.copyProperties(librosEntity, libros);
+            librosList.add(libros);
+        }
+
+        return librosList;
+    } 
+
 }
 

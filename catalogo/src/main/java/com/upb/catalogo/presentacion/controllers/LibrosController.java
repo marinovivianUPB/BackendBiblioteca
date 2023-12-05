@@ -24,10 +24,13 @@ public class LibrosController {
 
 
     @GetMapping("/{id}")
-    public Libros getEmployeeById(@PathVariable String id) {
+    public Libros getLibrosById(@PathVariable String id) {
         return librosService.getLibrosById(id);
     }
 
- 
+    @GetMapping("/autor/{autor}")
+        public List<Libros> getLibrosByAutor(@PathVariable String autor) {
+            return librosService.getLibrosByAutor(autor);
+        }
 
 }

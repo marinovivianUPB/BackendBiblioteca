@@ -1,11 +1,15 @@
 package com.upb.catalogo.business.models;
+import java.util.List;
 
 
 public class Libros {
     private String librosId;
     private String isbn;
+    private String autor;
     private String name;
     private String genero;
+    private List<String> tags;
+
 
     public String getLibrosId() {
         return librosId;
@@ -43,4 +47,20 @@ public class Libros {
     }
 
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
 }
